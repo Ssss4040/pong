@@ -11,8 +11,6 @@
 #define RIGHT_BIRDER 79
 
 void paint_field(int *racket_middle_left, int *racket_middle_right, int *field);
-// void move_raket_left(int *racket_middle_left, int *field);
-// void move_raket_right(int *racket_middle_right, int *field);
 int input();
 void output_field(int *field);
 
@@ -21,12 +19,9 @@ int main() {
     int racket_middle_left = 12;
     int racket_middle_right = 12;
     int count = 0;
-    while(count != 21)
+    while(count != 21) {
         paint_field(&racket_middle_left, &racket_middle_right, &field[0][0]);
-    // move_raket_left(&racket_middle_left, &field[0][0]);
-    // move_raket_right(&racket_middle_right, &field[0][0]);
-    //output_field(&field[0][0]);
-    
+    }
     return 0;
 }
 
@@ -54,36 +49,8 @@ void paint_field(int *racket_middle_left, int *racket_middle_right, int *field) 
     *racket_middle_right += input();
     *racket_middle_left += input();
     printf("%d", *racket_middle_left);
-    printf("%d", *racket_middle_right);
-
-    //field[(*racket_middle_left)*SIZE_FIELD_WIDTH+START_RACKET_LEFT] = 1;
-    //field[(*racket_middle_right)*SIZE_FIELD_WIDTH+START_RACKET_RIGHT] = 1;
-    
+    printf("%d", *racket_middle_right); 
 }
-
-// void move_raket_right(int *racket_middle_right, int *field) {
-    
-//     for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
-//         for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
-//             if ((x == START_RACKET_RIGHT) && ((y == *racket_middle_right-1) 
-//             || (y == *racket_middle_right) || (y == *racket_middle_right+1))) {
-//                 field[y*SIZE_FIELD_WIDTH+x] = 1;
-//             }
-//         }
-//     }
-// }
-
-// void move_raket_left(int *racket_middle_left, int *field) {
-    
-//     for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
-//         for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
-//             if ((x == START_RACKET_LEFT) && ((y == *racket_middle_left-1) 
-//             || (y == *racket_middle_left) || (y == *racket_middle_left+1))) {
-//                 field[y*SIZE_FIELD_WIDTH+x] = 1;
-//             }
-//         }
-//     }
-// }
 
 int input() {
     char input_move;
