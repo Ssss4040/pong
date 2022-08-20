@@ -13,6 +13,10 @@
 void paint_field(int *racket_middle_left, int *racket_middle_right, int *field);
 int input();
 void output_field(int *field);
+int input_racket_left(int racket_move);
+int input_racket_right(int racket_move);
+
+void clear();
 
 int main() {
     int field[SIZE_FIELD_WIDTH][SIZE_FIELD_LENGTH];
@@ -46,31 +50,38 @@ void paint_field(int *racket_middle_left, int *racket_middle_right, int *field) 
         }
     }
     output_field(field);
-    *racket_middle_right += input();
-    *racket_middle_left += input();
-    printf("%d", *racket_middle_left);
-    printf("%d", *racket_middle_right); 
+    *racket_middle_left = input_racket_left(*racket_middle_left);
+    *racket_middle_right = input_racket_right(*racket_middle_right);
 }
 
-int input() {
+int input_racket_left(int racket_move) {
     char input_move;
-    int move = 0;
     scanf("%c", &input_move);
     switch (input_move) {
-    case 'A': { move--; } break;
-    case 'a': { move--; } break;
-    case 'z': { move++; } break;
-    case 'Z': { move++; } break;
-    case 'K': { move--; } break;
-    case 'k': { move--; } break;
-    case 'M': { move++; } break;
-    case 'm': { move++; } break;
+    case 'A': {if (racket_move != 2) racket_move--; } break;
+    case 'a': {if (racket_move != 2) racket_move--; } break;
+    case 'z': {if (racket_move != 22) racket_move++; } break;
+    case 'Z': {if (racket_move != 22) racket_move++; } break;
     default: break;
     }
-    return move;
+    return racket_move;
+}
+
+int input_racket_right(int racket_move) {
+    char input_move;
+    scanf("%c", &input_move);
+    switch (input_move) {
+    case 'K': {if (racket_move != 2) racket_move--; } break;
+    case 'k': {if (racket_move != 2) racket_move--; } break;
+    case 'm': {if (racket_move != 22) racket_move++; } break;
+    case 'M': {if (racket_move != 22) racket_move++; } break;
+    default: break;
+    }
+    return racket_move;
 }
 
 void output_field(int *field) {
+    clear();
     for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
         for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
             if (field[y*SIZE_FIELD_WIDTH+x] == 1) {
@@ -82,5 +93,12 @@ void output_field(int *field) {
         if (y != RIGHT_BIRDER) {
             printf("\n");
         }
+    }
+}
+
+
+void clear() {
+    for (int i = 0; i < 200; i++) {
+        printf("\n");
     }
 }
