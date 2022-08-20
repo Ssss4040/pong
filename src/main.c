@@ -15,7 +15,6 @@ int input();
 void output_field(int *field);
 int input_racket_left(int racket_move);
 int input_racket_right(int racket_move);
-
 void clear();
 
 int main() {
