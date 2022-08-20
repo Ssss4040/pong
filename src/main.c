@@ -10,25 +10,30 @@
 #define LEFT_BIRDER 0
 #define RIGHT_BIRDER 79
 
-void paint_field(int *racket_middle_left, int *racket_middle_right, int *field);
+void paint_field(int *racket_middle_left, int *racket_middle_right, int *ball_width, int *ball_length, int *field);
 int input();
 void output_field(int *field);
 int input_racket_left(int racket_move);
 int input_racket_right(int racket_move);
 void clear();
+void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length);
 
 int main() {
     int field[SIZE_FIELD_WIDTH][SIZE_FIELD_LENGTH];
     int racket_middle_left = 12;
     int racket_middle_right = 12;
+    int ball_width = 2, ball_length = 12;
+    int movement_width = 1, movement_length = 1;
     int count = 0;
     while(count != 21) {
-        paint_field(&racket_middle_left, &racket_middle_right, &field[0][0]);
+        paint_field(&racket_middle_left, &racket_middle_right, &ball_width, &ball_length, &field[0][0]);
+        printf("racket left: %d, racket right: %d, ball width: %d, ball length: %d\n", racket_middle_left, racket_middle_right, ball_width, ball_length);
+        move_ball(&ball_width, &ball_length, &movement_width, &movement_length);
     }
     return 0;
 }
 
-void paint_field(int *racket_middle_left, int *racket_middle_right, int *field) {
+void paint_field(int *racket_middle_left, int *racket_middle_right, int *ball_width, int *ball_length, int *field) {
     for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
         for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
             if ((y == TOP_BIRDER) || (y == BOTTOM_BIRDER)) {
@@ -43,6 +48,8 @@ void paint_field(int *racket_middle_left, int *racket_middle_right, int *field) 
             } else if ((x == START_RACKET_RIGHT) && ((y ==*racket_middle_right) ||
             (y ==*racket_middle_right -1) || (y ==*racket_middle_right + 1))) {
                 field[y*SIZE_FIELD_WIDTH+x] = 1;
+            } else if ((y == *ball_length) && (x == *ball_width)) {
+                field[y*SIZE_FIELD_WIDTH+x] = 2;
             } else {
                 field[y*SIZE_FIELD_WIDTH+x] = 0;
             }
@@ -79,12 +86,21 @@ int input_racket_right(int racket_move) {
     return racket_move;
 }
 
+void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length) {
+    if (*ball_length == 23 || *ball_length == 1)
+        (*movement_length) *= -1;
+    *ball_width+= *movement_width;
+    *ball_length += *movement_length;
+}
+
 void output_field(int *field) {
-    clear();
+    //clear();
     for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
         for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
             if (field[y*SIZE_FIELD_WIDTH+x] == 1) {
                 printf("#");
+            } else if (field[y*SIZE_FIELD_WIDTH+x] == 2) {
+                printf("o");
             } else {
                 printf(" ");
             }
