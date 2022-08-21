@@ -16,7 +16,8 @@ void output_field(int *field);
 int input_racket_left(int racket_move);
 int input_racket_right(int racket_move);
 void clear();
-void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length);
+void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length, int *racket_middle_left, int *racket_middle_right);
+void check_hit_ball(int *ball_width, int *movement_width, int *racket_middle_left, int *racket_middle_right);
 
 int main() {
     int field[SIZE_FIELD_WIDTH][SIZE_FIELD_LENGTH];
@@ -28,7 +29,7 @@ int main() {
     while(count != 21) {
         paint_field(&racket_middle_left, &racket_middle_right, &ball_width, &ball_length, &field[0][0]);
         printf("racket left: %d, racket right: %d, ball width: %d, ball length: %d\n", racket_middle_left, racket_middle_right, ball_width, ball_length);
-        move_ball(&ball_width, &ball_length, &movement_width, &movement_length);
+        move_ball(&ball_width, &ball_length, &movement_width, &movement_length, &racket_middle_left, &racket_middle_right);
     }
     return 0;
 }
@@ -86,11 +87,26 @@ int input_racket_right(int racket_move) {
     return racket_move;
 }
 
-void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length) {
+void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length, int *racket_middle_left, int *racket_middle_right) {
     if (*ball_length == 23 || *ball_length == 1)
         (*movement_length) *= -1;
+    if ((*ball_width + *movement_width) == 1 || (*ball_width + *movement_width) == 76)
+        check_hit_ball(ball_width, movement_width, racket_middle_left, racket_middle_right);
     *ball_width+= *movement_width;
     *ball_length += *movement_length;
+}
+
+void check_hit_ball(int *ball_width, int *movement_width, int *racket_middle_left, int *racket_middle_right) {
+    if ((*ball_width + *movement_width) == 77) {
+        if (((*racket_middle_right) || ((*racket_middle_right)+1) || ((*racket_middle_right)-1)) == (*ball_width + *movement_width)) {
+            *movement_width *= -1;
+        } 
+    }
+    if ((*ball_width + *movement_width) == 1) {
+        if ((*racket_middle_left) == (*ball_width + *movement_width)) {
+            *movement_width *= -1;
+        } 
+    }
 }
 
 void output_field(int *field) {
