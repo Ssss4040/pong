@@ -18,6 +18,8 @@ int input_racket_right(int racket_move);
 void clear();
 void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length, int *racket_middle_left, int *racket_middle_right);
 void check_hit_ball(int *ball_width, int *movement_width,int *ball_length, int *movement_length, int *racket_middle_left, int *racket_middle_right);
+void check_point(int *field, int *point_left_player, int *point_right_player);
+void output_count_players(int *count, int *point_left_player, int *point_right_player);
 
 int main() {
     int field[SIZE_FIELD_WIDTH][SIZE_FIELD_LENGTH];
@@ -25,11 +27,13 @@ int main() {
     int racket_middle_right = 12;
     int ball_width = 2, ball_length = 12;
     int movement_width = 1, movement_length = 1;
-    int count = 0;
+    int count = 0, point_left_player = 0, point_right_player = 0;
     while(count != 21) {
+        output_count_players(&count, &point_left_player, &point_right_player);
         paint_field(&racket_middle_left, &racket_middle_right, &ball_width, &ball_length, &field[0][0]);
         printf("racket left: %d, racket right: %d, ball width: %d, ball length: %d\n", racket_middle_left, racket_middle_right, ball_width, ball_length);
         move_ball(&ball_width, &ball_length, &movement_width, &movement_length, &racket_middle_left, &racket_middle_right);
+        check_point(&field[0][0], &point_left_player, &point_right_player);
     }
     return 0;
 }
@@ -128,6 +132,32 @@ void check_hit_ball(int *ball_width, int *movement_width,int *ball_length, int *
             *movement_width *= -1;
         } 
     }
+}
+
+void check_point(int *field, int *point_left_player, int *point_right_player) {
+    //никто не забил - return 0
+    //левый игрок забил - return 1
+    //правый игрок забил - return 2
+    int res = 0, ball_l = 0;
+    for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
+        for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
+            if(field[y*SIZE_FIELD_WIDTH+x] == 2) {
+                ball_l = x;
+                printf("x=%d\n", x);
+            }
+        }
+    }
+    switch(ball_l) {
+        case 0: { res = 2; printf("*******POINT LEFT PLAYER*******\n"); (*point_left_player)++;} break;
+        case 78: { res = 1; printf("*******POINT RIGHT PLAYER*******\n"); (*point_right_player)++;} break;
+        default: { res = 0; } break;
+    }
+    printf("RESULT: %d\n", res);
+}
+
+void output_count_players(int *count, int *point_left_player, int *point_right_player) {
+    printf("---------------------------------------------------------------------------------\n");
+    printf("\t\t\t\tcount: %d\n\tpoint left player: %d\t\t\tpoint right player: %d\n", *count, *point_left_player, *point_right_player);
 }
 
 void output_field(int *field) {
