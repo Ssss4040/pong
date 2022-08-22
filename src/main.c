@@ -17,7 +17,7 @@ int input_racket_left(int racket_move);
 int input_racket_right(int racket_move);
 void clear();
 void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length, int *racket_middle_left, int *racket_middle_right);
-void check_hit_ball(int *ball_width, int *movement_width, int *racket_middle_left, int *racket_middle_right);
+void check_hit_ball(int *ball_width, int *movement_width,int *ball_length, int *movement_length, int *racket_middle_left, int *racket_middle_right);
 
 int main() {
     int field[SIZE_FIELD_WIDTH][SIZE_FIELD_LENGTH];
@@ -90,20 +90,41 @@ int input_racket_right(int racket_move) {
 void move_ball(int *ball_width, int *ball_length, int *movement_width, int *movement_length, int *racket_middle_left, int *racket_middle_right) {
     if (*ball_length == 23 || *ball_length == 1)
         (*movement_length) *= -1;
-    if ((*ball_width + *movement_width) == 1 || (*ball_width + *movement_width) == 76)
-        check_hit_ball(ball_width, movement_width, racket_middle_left, racket_middle_right);
+    if ((*ball_width + *movement_width) == 1 || (*ball_width + *movement_width) == 77)
+        check_hit_ball(ball_width, movement_width, ball_length, movement_length, racket_middle_left, racket_middle_right);
     *ball_width+= *movement_width;
     *ball_length += *movement_length;
+    
+    //##################### DELETE ##############################################
+    printf("ball_width: %d\t\tball_length: %d\n", *ball_width, *ball_length);
+    printf("movement_width: %d\tmovement_length: %d\n", *movement_width, *movement_length);
+    printf("CHECK HIT BALL-----------------------------------------\n");
+    printf("(*ball_width) + (*movement_width)) = %d\n", (*ball_width) + (*movement_width));
+    printf("----------------------RIGHT:\n");
+    printf("((*racket_middle_right: (%d)) == (*ball_width(%d) + *movement_width(%d)))\n", (*racket_middle_right), (*ball_width), (*movement_width));
+    printf("((*racket_middle_right+1: (%d)) == (*ball_width(%d) + *movement_width(%d)))\n", (*racket_middle_right)+1, (*ball_width), (*movement_width));
+    printf("((*racket_middle_right-1: (%d)) == (*ball_width(%d) + *movement_width(%d)))\n", (*racket_middle_right)-1, (*ball_width), (*movement_width));
+    printf("----------------------LEFT RACKET:\n");
+    printf("((*racket_middle_left: (%d)) == (*ball_width(%d) + *movement_width(%d)))\n", (*racket_middle_left), (*ball_width), (*movement_width));
+    printf("((*racket_middle_left+1: (%d)) == (*ball_width(%d) + *movement_width(%d)))\n", (*racket_middle_left)+1, (*ball_width), (*movement_width));
+    printf("((*racket_middle_left-1: (%d)) == (*ball_width(%d) + *movement_width(%d)))\n", (*racket_middle_left)-1, (*ball_width), (*movement_width));
+    printf("--------------------------------------------------------\n");
+    //##################### DELETE ##############################################
+
 }
 
-void check_hit_ball(int *ball_width, int *movement_width, int *racket_middle_left, int *racket_middle_right) {
-    if ((*ball_width + *movement_width) == 77) {
-        if (((*racket_middle_right) || ((*racket_middle_right)+1) || ((*racket_middle_right)-1)) == (*ball_width + *movement_width)) {
+void check_hit_ball(int *ball_width, int *movement_width,int *ball_length, int *movement_length, int *racket_middle_left, int *racket_middle_right) {
+    if (((*ball_width) + (*movement_width)) == 77) {
+        if (((*racket_middle_right) == (*ball_length + *movement_length))
+        || (((*racket_middle_right)+1) == (*ball_length + *movement_length)) 
+        || (((*racket_middle_right)-1) == (*ball_length + *movement_length))) {
             *movement_width *= -1;
         } 
     }
-    if ((*ball_width + *movement_width) == 1) {
-        if ((*racket_middle_left) == (*ball_width + *movement_width)) {
+    if (((*ball_width) + (*movement_width)) == 1) {
+        if (((*racket_middle_left) == (*ball_length + *movement_length))
+        || (((*racket_middle_left)+1) == (*ball_length + *movement_length)) 
+        || (((*racket_middle_left)-1) == (*ball_length + *movement_length))) {
             *movement_width *= -1;
         } 
     }
