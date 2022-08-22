@@ -29,9 +29,6 @@ void update_ball(int *field, int *movement_width, int *movement_length);
 
 int main() {
     int field[SIZE_FIELD_WIDTH][SIZE_FIELD_LENGTH];
-    int racket_middle_left = 12;
-    int racket_middle_right = 12;
-    int ball_width = 2, ball_length = 12;
     int movement_width = 1, movement_length = 1;
     int count = 0, point_left_player = 0, point_right_player = 0;
     start_field(&field[0][0]);
@@ -73,22 +70,19 @@ void start_field(int *field) {
 
 void paint_field(int *field, int *movement_width, int *movement_length) {
     int middle_racket_left, middle_racket_right;
-    int ball_width, ball_length;
     for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
         for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
             switch (field[y*SIZE_FIELD_WIDTH+x]) {
-                case 2: {
-                    ball_width =x; 
-                    ball_length = y;
-                    } break;
                 case 3: {
                     if (((field[(y-1)*SIZE_FIELD_WIDTH+x]) == 3) 
                         && (((field[(y+1)*SIZE_FIELD_WIDTH+x]) == 3))) 
                         middle_racket_left = y; 
                     } break;
-                case 4: if (((field[(y-1)*SIZE_FIELD_WIDTH+x]) == 4) 
+                case 4: {
+                    if (((field[(y-1)*SIZE_FIELD_WIDTH+x]) == 4) 
                         && (((field[(y+1)*SIZE_FIELD_WIDTH+x]) == 4))) 
-                        middle_racket_right = y; break;
+                        middle_racket_right = y; 
+                }break;
                 default: break;
             }
         }
@@ -126,8 +120,6 @@ void update_racket(int *field, int middle_racket_left, int middle_racket_right) 
     
 }
 
-
-
 int input_racket_left(int racket_move) {
     char input_move;
     scanf("%c", &input_move);
@@ -156,19 +148,12 @@ int input_racket_right(int racket_move) {
 
 void move_ball(int *field, int *movement_width, int *movement_length) {
     int ball_length, ball_width;
-    int middle_racket_left, middle_racket_right;
-    int racket_middle_left, racket_middle_right;
     for (int y = 0; y < SIZE_FIELD_LENGTH; y++) {
         for (int x = 0; x < SIZE_FIELD_WIDTH; x++) {
             switch (field[y*SIZE_FIELD_WIDTH+x]) {
                 case 2: {
                     ball_width =x; 
                     ball_length = y;
-                    } break;
-                case 3: {
-                    if (((field[(y-1)*SIZE_FIELD_WIDTH+x]) == 3) 
-                        && (((field[(y+1)*SIZE_FIELD_WIDTH+x]) == 3))) 
-                        middle_racket_left = y; 
                     } break; 
                 default: break;
             }
@@ -281,7 +266,6 @@ void output_field(int *field) {
         }
     }
 }
-
 
 void clear() {
     for (int i = 0; i < 200; i++) {
