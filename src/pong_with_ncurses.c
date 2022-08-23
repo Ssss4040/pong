@@ -41,12 +41,12 @@ int main() {
     int movement_width = 1, movement_length = 1;
     int count = 0, point_left_player = 0, point_right_player = 0;
     start_field(&field[0][0]);
-    while(count != 3) {
+    while(count != 21) {
         clear();
         output_count_players(&count, &point_left_player, &point_right_player);
         paint_field(&field[0][0], &movement_width, &movement_length);
         check_point(&field[0][0], &point_left_player, &point_right_player);
-        pausedelay(90000);
+        pausedelay(150000);
         
     }
     if (point_left_player > point_right_player) {
