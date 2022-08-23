@@ -41,7 +41,7 @@ int main() {
     int movement_width = 1, movement_length = 1;
     int count = 0, point_left_player = 0, point_right_player = 0;
     start_field(&field[0][0]);
-    while(count != 21) {
+    while(count != 3) {
         clear();
         output_count_players(&count, &point_left_player, &point_right_player);
         paint_field(&field[0][0], &movement_width, &movement_length);
@@ -49,6 +49,14 @@ int main() {
         pausedelay(90000);
         
     }
+    if (point_left_player > point_right_player) {
+        clear();
+        printw("\n**********WIN PLAYER LEFT**********");
+    } else {
+        clear();
+        printw("\n**********WIN PLAYER LEFT**********");
+    }
+    pausedelay(1000000);
     curs_set(1);
     clear();
     refresh();
@@ -225,20 +233,17 @@ void output_count_players(int *count, int *point_left_player, int *point_right_p
 }
 
 void start_new_game(int *field, int res) {
+    start_field(field);
     switch (res) {
-    case 1: {
-        int y = START_BALL_LEFT_PLAYER;
-        int x = MIDDLE_FIELD_LENGTH;
-        field[x*SIZE_FIELD_WIDTH+y] = 2;
-        } break;
     case 2: {
+        field[MIDDLE_FIELD_LENGTH*SIZE_FIELD_WIDTH+START_BALL_LEFT_PLAYER] = 0;
         int y = START_BALL_RIGHT_PLAYER;
         int x = MIDDLE_FIELD_LENGTH;
         field[x*SIZE_FIELD_WIDTH+y] = 2;
         } break;
     default: break;
     }
-    start_field(field);
+    
 }
 
 void output_field(int *field) {
